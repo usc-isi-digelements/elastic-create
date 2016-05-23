@@ -1,0 +1,117 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+
+        Element providing a way to create a single elasticsearch document. 
+
+        Example:
+
+        <elastic-client
+            config='{"host": "http://localhost:9200"}'
+            client="{{esclient}}"
+            cluster-status="{{my-status}}">
+        </elastic-client>
+
+        <elastic-create
+            client="[[esclient]]"
+            index="mockads"
+            elastic-type="ad"
+            body='{title: "new title here", "city": "New York City"}'
+            results="{{data}}"
+            lastError="{{error}}">
+        </elastic-create>
+
+@demo demo/index.html
+
+-->
+<script>
+  Polymer({
+    is: 'elastic-create',
+
+    properties: {
+      /**
+       * an instance of elasticsearch.Client which is connected to
+       * an elasticsearch server
+       */
+      client: {
+          type: Object
+      },
+
+      /**
+       * the elastic index (database name)
+       */
+      index: {
+          type: String
+      },
+
+      /**
+       * the type of the elasticsearch record to create
+       */
+      elasticType: {
+          type: String
+      },
+
+      /**
+       * contains the document you would like to add
+       *
+       * (see https://www.elastic.co for create API)
+       *
+       */
+      body: {
+          type: Object,
+          notify: true
+      },
+
+      /**
+       * result after a successful create, including document _id
+       *
+       */
+      results: {
+          type: Object,
+          notify: true,
+          readOnly: true,
+          value: null
+      },
+
+      /**
+       * either null or an error object that was returned from elastic search server.
+       */
+      lastError: {
+          type: Object,
+          notify: true,
+          readOnly: true
+      }
+    },
+    observers: [
+        'create(body, elasticType, client, index)'
+    ],
+    /**
+    * Creates elasticsearch record based on inputs.
+    * Will set results or error property depending on outcome.
+    */
+    create: function() {
+        var self = this;
+
+        self.client.create({
+            index: self.index,
+            type: self.elasticType,
+            body: self.body
+        }).then(function(results) {
+            self._setResults(results);
+            self._setLastError(null);
+        }).catch(function(err) {
+            self._setLastError(err);
+        });
+    }
+  });
+</script>

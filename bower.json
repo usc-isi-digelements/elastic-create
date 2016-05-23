@@ -1,0 +1,33 @@
+{
+  "name": "elastic-create",
+  "version": "1.0.0",
+  "authors": [
+    "Rachel Artiss"
+  ],
+  "description": "Element providing a way to create a single elasticsearch document.",
+  "keywords": [
+    "Elasticsearch",
+    "web-component",
+    "polymer"
+  ],
+  "main": "elastic-create.html",
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "homepage": "https://github.com/DigElements/elastic-create/",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.1.0",
+    "elastic-client": "DigElements/elastic-client#^0.0.3"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "*",
+    "elasticsearch": "~10.1.2"
+  },
+  "resolutions": {
+    "lodash": "^4.12.0",
+    "elasticsearch": "~10.1.2"
+  }
+}

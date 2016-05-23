@@ -1,0 +1,88 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+    <script src="../../elasticsearch/elasticsearch.js"></script>
+
+    <!-- Step 1: import the element to test -->
+    <link rel="import" href="../elastic-create.html">
+  </head>
+  <body>
+
+    <!-- You can use the document as a place to set up your fixtures. -->
+    <test-fixture id="elastic-create-fixture">
+      <template>
+        <elastic-create index="mockads" elastic-type="ad" 
+          results="{{data}}" error="{{error}}">
+        </elastic-create>
+      </template>
+    </test-fixture>
+
+    <script>
+      suite('<elastic-create>', function() {
+
+        var esCreate, client;
+
+        setup(function() {
+          esCreate = fixture('elastic-create-fixture');
+          client = new elasticsearch.Client({host: 'http://localhost:9200'});
+
+          esCreate.client = client;
+        });
+
+        test('defines the index property', function () {
+          assert.equal(esCreate.index, 'mockads');
+        });
+
+        test('defines the elastic-type property', function() {
+          assert.deepEqual(esCreate.elasticType, 'ad');
+        });
+
+        test('creates a record', function (done) {
+          esCreate.addEventListener('results-changed', function (event) {
+            assert.deepEqual(esCreate.body, {title: "new title here", city: "New York City"});
+            assert.equal(esCreate.results._index, esCreate.index);
+            assert.equal(esCreate.results._type, esCreate.elasticType);
+            assert.isString(esCreate.results._id);
+            assert.isNumber(esCreate.results._version);
+            assert.isTrue(esCreate.results.created);
+            assert.isUndefined(esCreate.lastError);
+            done();
+          });
+          esCreate.body = {title: "new title here", city: "New York City"};
+        });
+
+        teardown('if result was created, delete it', function(done) {
+          if(esCreate.results && esCreate.results._id) {
+            client.delete({
+              index: esCreate.index,
+              type: esCreate.elasticType,
+              id: esCreate.results._id
+            }).then(function(results) {
+              done();
+            }).catch(function(err) {
+              done(err);
+            });
+          } else {
+            done();
+          }
+        });
+
+      });
+    </script>
+
+  </body>
+</html>

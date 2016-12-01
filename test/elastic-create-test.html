@@ -51,6 +51,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           assert.deepEqual(esCreate.elasticType, 'ad');
         });
 
+        test('other properties are initialized as expected', function() {
+          assert.isUndefined(esCreate.body);
+          assert.isUndefined(esCreate.lastError);
+          assert.isNull(esCreate.results);
+        });
+
         test('creates a record', function (done) {
           esCreate.addEventListener('results-changed', function (event) {
             assert.deepEqual(esCreate.body, {title: "new title here", city: "New York City"});
@@ -60,8 +66,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             assert.isNumber(esCreate.results._version);
             assert.isTrue(esCreate.results.created);
             assert.isUndefined(esCreate.lastError);
+          });
+
+          esCreate.addEventListener('last-error-changed', function (event) {
+            assert.isNull(esCreate.lastError);
             done();
           });
+
           esCreate.body = {title: "new title here", city: "New York City"};
         });
 

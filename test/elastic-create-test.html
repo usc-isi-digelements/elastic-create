@@ -63,7 +63,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             assert.equal(esCreate.results._index, esCreate.index);
             assert.equal(esCreate.results._type, esCreate.elasticType);
             assert.isString(esCreate.results._id);
-            assert.isNumber(esCreate.results._version);
+            assert.equal(esCreate.results._version, 1);
             assert.isTrue(esCreate.results.created);
             assert.isUndefined(esCreate.lastError);
           });
@@ -74,6 +74,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           });
 
           esCreate.body = {title: "new title here", city: "New York City"};
+        });
+
+        test('returns error when appropriate', function (done) {
+          esCreate.addEventListener('last-error-changed', function (event) {
+            assert.isNull(esCreate.results);
+            assert.isNotNull(esCreate.lastError);
+            assert.equal(esCreate.lastError.status, 400);
+            assert.equal(esCreate.lastError.displayName, 'BadRequest');
+            done();
+          });
+
+          esCreate.body = 'badrequest';
+        });
+
+        test('does not have html content', function() {
+          assert.equal(Polymer.dom(esCreate.root).children.length, 0);
         });
 
         teardown('if result was created, delete it', function(done) {

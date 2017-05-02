@@ -53,7 +53,7 @@ A Polymer Element providing a way to create a single elasticsearch document.
        * @type {Object}
        */
       client: {
-          type: Object
+        type: Object
       },
 
       /**
@@ -64,7 +64,7 @@ A Polymer Element providing a way to create a single elasticsearch document.
        * @type {String}
        */
       index: {
-          type: String
+        type: String
       },
 
       /**
@@ -75,7 +75,7 @@ A Polymer Element providing a way to create a single elasticsearch document.
        * @type {String}
        */
       elasticType: {
-          type: String
+        type: String
       },
 
       /**
@@ -86,7 +86,7 @@ A Polymer Element providing a way to create a single elasticsearch document.
        * @type {Object}
        */
       body: {
-          type: Object
+        type: Object
       },
 
       /**
@@ -98,10 +98,10 @@ A Polymer Element providing a way to create a single elasticsearch document.
        * @default null
        */
       results: {
-          type: Object,
-          notify: true,
-          readOnly: true,
-          value: null
+        type: Object,
+        notify: true,
+        readOnly: true,
+        value: null
       },
 
       /**
@@ -112,14 +112,14 @@ A Polymer Element providing a way to create a single elasticsearch document.
        * @type {Object}
        */
       lastError: {
-          type: Object,
-          notify: true,
-          readOnly: true
+        type: Object,
+        notify: true,
+        readOnly: true
       }
     },
 
     observers: [
-        '_create(body, elasticType, client, index)'
+      '_create(body, elasticType, client, index)'
     ],
 
     /**
@@ -128,18 +128,18 @@ A Polymer Element providing a way to create a single elasticsearch document.
      * @private
      */
     _create: function() {
-        var self = this;
+      var self = this;
 
-        self.client.create({
-            index: self.index,
-            type: self.elasticType,
-            body: self.body
-        }).then(function(results) {
-            self._setResults(results);
-            self._setLastError(null);
-        }).catch(function(err) {
-            self._setLastError(err);
-        });
+      self.client.create({
+        index: self.index,
+        type: self.elasticType,
+        body: self.body
+      }).then(function(results) {
+        self._setResults(results);
+        self._setLastError(null);
+      }).catch(function(err) {
+        self._setLastError(err);
+      });
     }
   });
 </script>

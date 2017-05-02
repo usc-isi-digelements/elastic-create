@@ -1,7 +1,7 @@
 {
   "name": "elastic-create",
   "description": "A Polymer Element providing a way to create a single elasticsearch document.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "authors": ["Next Century Corporation"],
   "license": "Apache-2.0",
   "keywords": [
@@ -19,9 +19,7 @@
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.7.0",
-    "elastic-client": "DigElements/elastic-client#^1.0.3",
-    "elasticsearch": "^11.0.1",
-    "elastic.js": "DigElements/elastic.js#6639a1030eb071fb762bcdd742fdbf037fb57b24"
+    "elastic-client": "DigElements/elastic-client#^1.0.3"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.1.7",

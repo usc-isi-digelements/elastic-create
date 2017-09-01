@@ -19,31 +19,33 @@ limitations under the License.
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>elastic-create Demo</title>
-    <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
+    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
     <link rel="import" href="../../elastic-client/elastic-client.html">
     <link rel="import" href="../elastic-create.html">
   </head>
   <body unresolved>
-    <template is="dom-bind">
-      <elastic-client
-        config='{"host": "http://localhost:9200"}'
-        client="{{esclient}}"
-        cluster-status="{{my-status}}">
-      </elastic-client>
+    <dom-bind>
+      <template is="dom-bind">
+        <elastic-client
+          config='{"host": "http://localhost:9200"}'
+          client="{{esclient}}"
+          cluster-status="{{my-status}}">
+        </elastic-client>
 
-      <elastic-create
-        client="[[esclient]]"
-        index="mockads"
-        elastic-type="ad"
-        body='{title: "new title here", "city": "New York City"}'
-        results="{{data}}"
-        lastError="{{error}}">
-      </elastic-create>
+        <elastic-create
+          client="[[esclient]]"
+          index="mockads"
+          elastic-type="ad"
+          body='{"title": "new title here", "city": "New York City"}'
+          results="{{data}}"
+          lastError="{{error}}">
+        </elastic-create>
 
-      <h4>Record info after record created on mockads index:</h4>
-      <p>ID of record created: {{data._id}}</p>
-      <p>Current record version: {{data._version}}</p>
-      <p>Created: {{data.created}}</p>
-    </template>
+        <h4>Record info after record created on mockads index:</h4>
+        <p>ID of record created: {{data._id}}</p>
+        <p>Current record version: {{data._version}}</p>
+        <p>Created: {{data.created}}</p>
+      </template>
+    </dom-bind>
   </body>
 </html>

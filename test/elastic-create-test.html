@@ -27,8 +27,7 @@ limitations under the License.
   <body>
     <test-fixture id="elastic-create-fixture">
       <template>
-        <elastic-create index="mockads" elastic-type="ad" 
-          results="{{data}}" error="{{error}}">
+        <elastic-create>
         </elastic-create>
       </template>
     </test-fixture>
@@ -43,6 +42,8 @@ limitations under the License.
           client = new elasticsearch.Client({host: 'http://localhost:9200'});
 
           esCreate.client = client;
+          esCreate.index = 'mockads';
+          esCreate.elasticType = 'ad';
         });
 
         test('defines the index property', function () {
@@ -60,7 +61,13 @@ limitations under the License.
         });
 
         test('creates a record', function (done) {
+          var first = false;
           esCreate.addEventListener('results-changed', function (event) {
+            if(!first) {
+              assert.isNull(esCreate.results);
+              first = true;
+              return;
+            }
             assert.deepEqual(esCreate.body, {title: "new title here", city: "New York City"});
             assert.equal(esCreate.results._index, esCreate.index);
             assert.equal(esCreate.results._type, esCreate.elasticType);
@@ -79,7 +86,18 @@ limitations under the License.
         });
 
         test('returns error when appropriate', function (done) {
+          esCreate.addEventListener('results-changed', function (event) {
+            assert.isNull(esCreate.results);
+            done();
+          });
+
+          var first = false;
           esCreate.addEventListener('last-error-changed', function (event) {
+            if(!first) {
+              assert.isNull(esCreate.lastError);
+              first = true;
+              return;
+            }
             assert.isNull(esCreate.results);
             assert.isNotNull(esCreate.lastError);
             assert.equal(esCreate.lastError.status, 400);

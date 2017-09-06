@@ -119,24 +119,32 @@ A Polymer Element providing a way to create a single elasticsearch document.
     },
 
     observers: [
-      '_create(body, elasticType, client, index)'
+      'create(body, client, index, elasticType)'
     ],
 
     /**
      * Creates elasticsearch record based on inputs.  Will set results or error property depending on outcome.
      *
-     * @private
+     * @param {Object} createBody
+     * @param {Object} esClient
+     * @param {String} indexName
+     * @param {String} indexType
      */
-    _create: function() {
-      var self = this;
+    create: function(createBody, esClient, indexName, indexType) {
+      if(!createBody || !esClient || !indexName || !indexType) {
+        return;
+      }
 
-      self.client.create({
-        index: self.index,
-        type: self.elasticType,
-        body: self.body
+      var self = this;
+      self._setResults(null);
+      self._setLastError(null);
+
+      esClient.create({
+        index: indexName,
+        type: indexType,
+        body: createBody
       }).then(function(results) {
         self._setResults(results);
-        self._setLastError(null);
       }).catch(function(err) {
         self._setLastError(err);
       });

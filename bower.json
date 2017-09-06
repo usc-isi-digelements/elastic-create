@@ -1,7 +1,7 @@
 {
   "name": "elastic-create",
   "description": "A Polymer Element providing a way to create a single elasticsearch document.",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "authors": ["Next Century Corporation"],
   "license": "Apache-2.0",
   "keywords": [

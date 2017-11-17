@@ -139,7 +139,7 @@ A Polymer Element providing a way to create a single elasticsearch document.
       self._setResults(null);
       self._setLastError(null);
 
-      esClient.create({
+      esClient.index({
         index: indexName,
         type: indexType,
         body: createBody

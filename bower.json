@@ -12,14 +12,14 @@
     "elastic.js"
   ],
   "main": "elastic-create.html",
-  "homepage": "https://github.com/DigElements/elastic-create/",
+  "homepage": "https://github.com/usc-isi-digelements/elastic-create/",
   "ignore": [
     "/.*",
     "/test/"
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0",
-    "elastic-client": "DigElements/elastic-client#2.1.0"
+    "elastic-client": "usc-isi-digelements/elastic-client#2.1.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^2.0.0",
